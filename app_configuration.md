@@ -6,7 +6,7 @@ When using the API, the server uses these values in order to **identify what app
 You may think that using official API credentials, retrieved by decompiling official apps, may allow you no to be restricted as often by Telegram. **This is a wrong assumption**. The server can detect such cases and **ban the abusing account**. Keep in mind that this is also **against** the [TOS](https://core.telegram.org/api/terms).
 
 ## How to retrieve API credentials
-Log in to my.telegram.org and click on _API development tools_. If this is your first time, the website will ask you to create your app.
+Log in to [my.telegram.org](https://my.telegram.org) and click on _API development tools_. If this is your first time, the website will ask you to create your app.
 
 ![image](https://user-images.githubusercontent.com/81624781/166121199-2278c9a4-cdb3-45d7-9700-d0c7d6899308.png)
 
