@@ -84,7 +84,7 @@ if(clientState is ClientState.Unauthenticated)
     var login = client.GetLoginFlow();
     //You can obviously also use Console.ReadLine() to get the phone number for the console
     var authentication = await login.AsUser(PHONE_NUMBER_HERE, new CodeSettings());
-    //If you wanted to login as a user, you can just uncomment the line below and comment the line above.
+    //If you want to login as a user, you can just uncomment the line below and comment the line above.
     //var authentication = await login.AsBotAsync(BOT_TOKEN_HERE);
     var finished = false;
     while (!finished)
@@ -95,21 +95,21 @@ if(clientState is ClientState.Unauthenticated)
                 logger.Information("Now insert the login code: ");
                 authentication = await completeLogin.WithCodeAsync(Console.ReadLine());
                 break;
-              case LoginNeedsSignup signup:
-                  logger.Information("Creating account");
-                  authentication = await signup.WithProfileData("My CatraProto", "Account");
-                  break;
-              case LoginFailed loginFailed:
-                  logger.Error("Login failed error {Error}", loginFailed.FailReason);
-                  finished = true;
-                  break;
-              case LoginSuccessful loginSuccessful:
-                  logger.Information("Login successful, user: {User}", loginSuccessful.LoggedUser.ToJson());
-                  finished = true;
-                  break;
-               default:
-                  logger.Error("Type {Authentication} is not supported", authentication);
-                  return;
+            case LoginNeedsSignup signup:
+                logger.Information("Creating account");
+                authentication = await signup.WithProfileData("My CatraProto", "Account");
+                break;
+            case LoginFailed loginFailed:
+                logger.Error("Login failed error {Error}", loginFailed.FailReason);
+                finished = true;
+                break;
+            case LoginSuccessful loginSuccessful:
+                logger.Information("Login successful, user: {User}", loginSuccessful.LoggedUser.ToJson());
+                finished = true;
+                break;
+            default:
+                logger.Error("Type {Authentication} is not supported", authentication);
+                return;
         }
     }
 }
