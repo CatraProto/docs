@@ -115,7 +115,7 @@ if(clientState is ClientState.Unauthenticated)
 }
 
 logger.Information("Press any key to kill the client");
-await client.ForceSaveAsync();
 Console.ReadLine();
+await client.ForceSaveAsync();
 ```
 Upon exiting, you must **always** save the session by calling `client.ForceSaveAsync()` and dispose the `TelegramClient` object (in this example, it is done by declaring the _client_ variable with `await using`).
