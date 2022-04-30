@@ -10,6 +10,6 @@ gh_edit_link: false
 color_scheme: dark
 aux_links:
   "Source Code":
-    - "https://github.com/CatraProto/Client"
+    - "//github.com/CatraProto/Client"
     
 remote_theme: just-the-docs/just-the-docs
