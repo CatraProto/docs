@@ -1,3 +1,8 @@
+---
+title: App Configuration
+nav_order: 2
+---
+
 # App Configuration
 The Telegram API **requires** every app to have its own combination of _api_id_ and _api_hash_ and provides DC configuration for every app.
 ## What are API credentials?
