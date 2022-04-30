@@ -10,7 +10,7 @@ In order to interact with the API, we will need a combination of api_id and api_
 After retrieving our API credentials we must add CatraProto to your project. You can do this by referencing CatraProto.Client from NuGet or by downloading the nupkg package from GitHub's Releases page.
 ## Receiving messages
 To receiving incoming updates, we start off by creating an EventHandler class which extends the [IEventHandler](https://github.com/CatraProto/Client/blob/master/src/CatraProto.Client/Updates/Interfaces/IEventHandler.cs) interface.
-```
+```cs
 public class EventHandler : IEventHandler
 {
     private readonly TelegramClient _client;
@@ -39,7 +39,7 @@ public class EventHandler : IEventHandler
 ## Initializing the client
 Now that we have written the EventHandler and implemented our own logic, we initialize CatraProto and login for the first time.
 
-```
+```cs
 //Instanciate the serilog logger to use.
 var logger = Logger.CreateDefaultLogger();
 
