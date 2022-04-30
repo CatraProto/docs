@@ -12,7 +12,7 @@ Log in to my.telegram.org and click on _API development tools_. If this is your 
 
 After filling in the form and having created your application, the website will show you your app's configuration.
 
-For **no reason** you should share your API credentials. If someone uses your credentials to **abuse** the API or **violate** the [Telegram TOS](https://telegram.org/tos) or [API TOS](https://core.telegram.org/api/terms) your account(s) **may get banned**.
+For **no reason** should you share your API credentials. If someone uses your credentials to **abuse** the API or **violate** the [Telegram TOS](https://telegram.org/tos) or [API TOS](https://core.telegram.org/api/terms) your account(s) **may get banned**.
 
 ## Available MTProto servers
 In this same webpage, you have surely noticed that there is a dedicated section containing information (a pair of IP and _Public Key_) regarding the default DCs assigned to your app. RSA Keys are built-in into CatraProto, so you **don't have to care about them**.
