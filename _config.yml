@@ -12,4 +12,11 @@ aux_links:
   "Source Code":
     - "//github.com/CatraProto/Client"
     
+    
+---
+layout: default
+title: What is CatraProto?
+nav_order: 4
+---
+
 remote_theme: just-the-docs/just-the-docs
