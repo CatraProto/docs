@@ -1,3 +1,8 @@
+---
+title: Getting started
+nav_order: 1
+---
+
 # What is CatraProto?
 CatraProto is a fully-asynchronous library that implements the MTProto protocol and the Telegram API. 
 This means you can interact with the Telegram API (**as a regular user** as well) **without having any knowledge of the encryption and communication protocol**, it also implements the API so **you won't have to take care of any database implementation or updates handling.**
