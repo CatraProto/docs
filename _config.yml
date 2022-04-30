@@ -6,4 +6,4 @@ relative_links:
 include:
   - README.md
 
-theme: jekyll-theme-minimal
+remote_theme: just-the-docs/just-the-docs
