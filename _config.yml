@@ -5,7 +5,7 @@ relative_links:
   collections: true
 include:
   - README.md
-  
+title: CatraProto Docs
 heading_anchors: true
 gh_edit_link: false
 color_scheme: dark
