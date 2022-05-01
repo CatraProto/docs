@@ -5,7 +5,7 @@ nav_order: 2
 # Configuring CatraProto
 CatraProto **requires** some user-provided configuration data such as [API credentials](app_configuration.md) to work.
 ## API Settings
-The _ApiSettings_ constructor takes configuration data to be **communicated to Telegram** regarding the app.
+The _ApiSettings_ constructor takes configuration data to be **transmitted to Telegram** regarding the app.
 - `apiId` and `apiHash`, which can be retrieved by following these [instructions](app_configuration.md).
 - `langPack` is the [language pack](https://telegram.org/blog/translations-iv2) used by the client. Allowed values are: _desktop_, _android_, _ios_, _macos_ and *android_x*.
 - `deviceModel`, `appVersion` and `systemVersion` are custom parameters shown to the user in its devices tab. They do not follow any standard.
