@@ -42,7 +42,7 @@ Connection settings are used to specify the default MTProto server, PFS key dura
   ConnectionInfo takes the following parameters:
   - `IPAddress` takes an instance of [IPAddress](https://docs.microsoft.com/en-us/dotnet/api/system.net.ipaddress). It is used to specify the IP of the **default datacenter**. You can get information about your default datacenter by following these [instructions](app_configuration.md).
   - `port` specifies the port to be used in order to connect to the datacenter. You can find it in your app's configuration. You can find it right after the ":" in the IP address.
-  - `dcId` used to specify which DC we are connecting to. You can find what DC has been assigned to your app just under the IP address. **If this value is incorrect the library won't perform many operations such as logging in correctly**.
+  - `dcId` used to specify which DC we are connecting to. You can find what DC has been assigned to your app just under the IP address. **If this value is incorrect the library won't be able to perform many operations such as logging in correctly**.
   - `test` specifies whether the DC we are connecting to is a test DC. It is **very important** to make sure this parameter is correct otherwise CatraProto **won't** be able to communicate with the API. 
 - The `pfsKeyDuration` parameter specifies in seconds how long the PFS Key should last. When expired, the library will automatically generated a new one. This **does not mean** you will lose access to your session. **One usually doesn't need to change this parameter**. 
 - The `connectionTimeout` parameter specifies in seconds how much time must elapse before reconnecting if the server does not reply.
