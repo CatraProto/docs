@@ -34,7 +34,7 @@ To not create confusion, it is recommended to give the session a _.catra_ extens
 
 Example:
 ```cs 
-var sessionSettings = new SessionSettings(new FileSerializer("accountSession.catra"), new DatabaseSettings($"data/accountData.db", 50), "Private account");
+var sessionSettings = new SessionSettings(new FileSerializer("data/accountSession.catra"), new DatabaseSettings($"data/accountData.db", 50), "Private account");
 ```
 ## Connection Settings
 Connection settings are used to specify the default MTProto server, PFS key duration and other connection settings.
