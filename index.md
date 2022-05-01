@@ -9,7 +9,7 @@ This means you can interact with the Telegram API (**as a regular user** as well
 
 # Getting started
 ## Retrieving API credentials
-In order to interact with the API, we will need a combination of api_id and api_hash which can be retrieved by logging-in on my.telegram.org.
+In order to interact with the API, we will need a combination of api_id and api_hash which can be retrieved by logging-in to my.telegram.org.
 **Never share these credentials with anyone.**
 
 More information can be found [here](app_configuration.md)
@@ -34,7 +34,7 @@ public class EventHandler : IEventHandler
             var asPeerId = PeerId.FromPeer(message.PeerId);
             if (asPeerId.Type is not PeerType.User)
             {
-                //We only want to reply in messages sent in private chat.
+                //We only want to reply to messages sent in private chat.
                 return;
             }
 
@@ -43,11 +43,12 @@ public class EventHandler : IEventHandler
     }
 }
 ```
+
 ## Initializing the client
 Now that we have written the EventHandler and implemented our own logic, we initialize CatraProto and login for the first time.
 
 ```cs
-//Instanciate the serilog logger to use.
+//Instanciate the SeriLog logger to use.
 var logger = Logger.CreateDefaultLogger();
 
 //We define the parameters used to connect to Telegram. You can change anything you want here (as long as you use an existing lang pack and **don't use official api credentials**)
@@ -125,4 +126,5 @@ logger.Information("Press any key to kill the client");
 Console.ReadLine();
 await client.ForceSaveAsync();
 ```
+
 Upon exiting, you must **always** save the session by calling `client.ForceSaveAsync()` and dispose the `TelegramClient` object (in this example, it is done by declaring the _client_ variable with `await using`).
