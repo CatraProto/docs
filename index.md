@@ -55,17 +55,12 @@ var logger = Logger.CreateDefaultLogger();
 var apiSettings = new ApiSettings(YOUR_API_ID, YOUR_API_HASH, "CatraProto", "1.0", "en", "android", "en", "1.0");
 
 //Now, we need to tell CatraProto where to store the session and the data it needs to work with.
-//The first parameter in SessionSettings specifies where the session will be stored.
-//The first parameter in DatabaseSettings specifies where the database will be created.
-//The second parameter defines the max size of the in-memory peer cache.
 var sessionSettings = new SessionSettings(new FileSerializer($"data/MySession.catra"), new DatabaseSettings("data/MySession.db", 50), sessionName);
 
 //In your my.telegram.org page you can also see there is an addresses for production DCs, and an address for test DCs.
 //You can choose whichever you like based on your needs but keep in mind that test DCs is a completely different environment.
 var connectionInfo = new ConnectionInfo(IPAddress.Parse(DC_IP), IS_TEST, 443, ID);
 
-//The second parameter in ConnectionSettings specifies the duration of the PFS key. You don't need to change it.
-//The third parameter specifies the connection timeout.
 var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 30);
 
 //We put everything together
