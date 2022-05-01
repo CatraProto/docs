@@ -50,7 +50,7 @@ if (message.Date - StartTime < 0)
    return;
 }
 ```
-Where `StartTime` is the unix timestamp value of when you started the script. You can get it by calling `DateTimeOffset.UtcNow.ToUnixTimeSeconds()`.
+Where `StartTime` is the unix timestamp value of when you started the script. You can get it by calling `DateTimeOffset.UtcNow.ToUnixTimeSeconds()` at startup and save it in a static field.
 
 ## How updates are delivered
 In order to **avoid flooding** the event handler some internal queues are used. There is a queue for each peer and **if an update is not bound to a peer it is added to a common queue**. This means that **each update is separated based on which chat it was sent in** and **it will wait** to trigger your event handler **if an updated from the same chat is still being processed.**
