@@ -19,7 +19,7 @@ var apiSettings = new ApiSettings(45654, "63h4ofskqp045jsl204h", "Raspberry Pi",
 Session settings are used by CatraProto to know where to store both the session and data received by Telegram.
 - The `sessionSerializer` parameter takes an instance of [IAsyncSessionSerializer](https://github.com/CatraProto/Client/blob/master/src/CatraProto.Client/MTProto/Session/Interfaces/IAsyncSessionSerializer.cs) and uses it to serialize the session.
 
-  CatraProto provides a [FileSerializer](https://github.com/CatraProto/Client/src/CatraProto.Client/MTProto/Session/Deserializers/FileSerializer.cs).
+  CatraProto provides a [FileSerializer](https://github.com/CatraProto/Client/blob/master/src/CatraProto.Client/MTProto/Session/Deserializers/FileSerializer.cs).
   It only requires a parameter:
   - `filePath` where the session will be saved.
   You can also implement your own IAsyncSessionSerializer.
