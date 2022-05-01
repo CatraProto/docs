@@ -24,5 +24,5 @@ In this same webpage, you have surely noticed that there is a dedicated section 
 
 It is a good idea to **use the provided IP(s)**. Keep in mind that when using test DCs, this **must** be specified in the _ConnectionInfo_ constructor, as follows:
 ```cs
-var connectionSettings = new ConnectionInfo(IPAddress.Parse(IP), IS_TEST, 443, DC_ID);
+var connectionSettings = new ConnectionInfo(IPAddress.Parse(IP), IS_TEST, PORT, DC_ID);
 ```
