@@ -66,7 +66,7 @@ var connectionInfo = new ConnectionInfo(IPAddress.Parse(DC_IP), IS_TEST, 443, ID
 
 //The second parameter in ConnectionSettings specifies the duration of the PFS key. You don't need to change it.
 //The third parameter specifies the connection timeout.
-var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 30)
+var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 30);
 
 //We put everything together
 var settings = new ClientSettings(sessionSettings, apiSettings, connectionSettings);
@@ -74,7 +74,7 @@ var settings = new ClientSettings(sessionSettings, apiSettings, connectionSettin
 //Instanciate the client
 await using var client = new TelegramClient(settings, logger);
 
-//Give it the instance to our instance of IEventHandler
+//Set the event handler
 client.SetEventHandler(new EventHandler(client, logger));
 
 //Initialize the client
