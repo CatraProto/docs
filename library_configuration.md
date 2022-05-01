@@ -53,7 +53,7 @@ Connection settings are used to specify the default MTProto server, PFS key dura
 Example:
 ```cs 
 var connectionInfo = new ConnectionInfo(IPAddress.Parse("149.154.167.50"), 443, 2, false);
-var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 25, 15, false, false));
+var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 25, 15, false, false);
 ```
 
 ## Combining every setting together
