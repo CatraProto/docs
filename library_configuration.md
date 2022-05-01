@@ -46,7 +46,7 @@ Connection settings are used to specify the default MTProto server, PFS key dura
   - `test` specifies whether the DC we are connecting to is a test DC. It is **very important** to make sure this parameter is correct otherwise CatraProto **won't** be able to communicate with the API. 
 - The `pfsKeyDuration` parameter specifies in seconds how long the PFS Key should last. When expired, the library will automatically generated a new one. This **does not mean** you will lose access to your session. **One usually doesn't need to change this parameter**. 
 - The `connectionTimeout` parameter specifies in seconds how much time must elapse before reconnecting if the server does not reply.
-- The `connectionRetry` parameter specifies in seconds how much the library must wait before trying to connect after a failed attempt. 
+- The `connectionRetry` parameter specifies in seconds how much the library must wait before trying to connect again after a failed attempt. 
 - The `ipv6Allowed` parameter specifies whether IPv6 is allowed or not.
 - The `ipv6Only` parameter specifies whether only IPv6 must be used or not. This works only for connections that are not the default connection as Telegram only provides IPv4s.
 
