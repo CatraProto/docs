@@ -28,7 +28,7 @@ Session settings are used by CatraProto to know where to store both the session 
     DatabaseSettings' constructor requires two parameters:
   - `path` which specifies a path where the persistent cache will be created.
   - `peerCacheSize` which is the maximum number of elements for the in-memory peer cache.
-- The `sessionName` parameters takes a string specifying which will be used to write logs.
+- The `sessionName` parameters takes a string specifying the name of the session which will be used to write logs.
 
 To not create confusion, it is recommended to give the session a _.catra_ extension and a _.db_ extension to the database.
 
