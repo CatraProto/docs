@@ -47,7 +47,7 @@ Connection settings are used to specify the default MTProto server, PFS key dura
 - The `pfsKeyDuration` parameter specifies in seconds how long the PFS Key should last. When expired, the library will automatically generated a new one. This **does not mean** you will lose access to your session. **One usually doesn't need to change this parameter**. 
 - The `connectionTimeout` parameter specifies in seconds how much time must elapse before reconnecting if the server does not reply.
 - The `connectionRetry` parameter specifies in seconds how much must the library wait before timing-out while connecting. 
-- The `ipv6Allowed` parameters specifies whether IPv6 is allowed or not.
+- The `ipv6Allowed` parameter specifies whether IPv6 is allowed or not.
 - The `ipv6Only` parameter specifies whether only IPv6 must be used or not. This works only for connections that are not the default connection as Telegram only provides IPv4s.
 
 Example:
