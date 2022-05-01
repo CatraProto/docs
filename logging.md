@@ -5,7 +5,7 @@ nav_order: 3
 # Logger Configuration
 CatraProto uses [Serilog](https://serilog.net) for logging. You can use the helper method `Logger.CreateDefaultLogger()` to create a default logger which prints to console. **If no parameter is provided, the method will create a logger with logging level set to `LogEventLevel.Information`**.
 
-**You can provide a `LoggingLevelSwitch` to `Logger.CreateDefaultLogger()` if you want to change logging level.**
+You can provide a `LoggingLevelSwitch` to `Logger.CreateDefaultLogger()` if you want to change logging level.
 
 Example:
 ```cs
