@@ -7,7 +7,7 @@ Receiving messages means in fact **receiving an update**. Updates **do not only 
 
 **CatraProto takes care of the correct handling of updates so you don't have to make sure there are no gaps or duplicate updates**.
 
-## Creating our EventHandler
+## Creating an EventHandler
 To handle updates a class extending the [IEventHandler](https://github.com/CatraProto/Client/blob/master/src/CatraProto.Client/Updates/Interfaces/IEventHandler.cs) interface must be defined.
 
 Example:
@@ -39,6 +39,14 @@ public class EventHandler : IEventHandler
 ```
 
 The following code checks whether the update is an instance of `UpdateNewMessage` and that the Message inside it is an instance of `Message` with the `Out` property set to false. If the check is successful it makes sure the message was received inside a private chat and then replies to the user.
+
+## Setting the event handler
+After having declared our event handler we must set it by calling `client.SetEventHandler()`. If this method is called when an event handler is already set it will throw an InvalidOperationException.
+
+Example:
+```cs
+client.SetEventHandler(new EventHandler(client));
+```
 
 ## Avoiding older messages
 When first logging in, all updates from when the client was created are fetched. This may lead to undesired behaviour as you may not want your bot to start replying to older messages. To mitigate this, you can check the message's date.
