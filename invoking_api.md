@@ -19,7 +19,7 @@ As you may have noticed, the method not only contains _Async_ at the end of it, 
 ### Simplified API
 **CatraProto tries to simplify the API as much as possible** allowing you not to care about implementing a database and other implementation details. This is done by using the `PeerId` struct, exposing `long` directly for IDs where possible, and making some parameters optional.
 
-#### An in-depth look at how CatraProto simplifies the API
+### An in-depth look at how CatraProto simplifies the API
 For example, for each method that requires a `InputPeer` **an overload is generated to simplify the API** and allow you to use the PeerId struct. You can see it in the EventHandler [example](receiving_updates.md#creating-an-eventhandler).
 
 An example of simplified method is `messages.sendMessage`. This is its TL definition:
@@ -37,7 +37,7 @@ SendMessageAsync(PeerId peer, string message, bool noWebpage = false, bool silen
 - The `InputPeer` type was replaced by `PeerId`. This means that **CatraProto will also automatically fetch all the data it needs** about the peer to send the message. 
 - The `random_id` parameter was made nullable. It is handled by CatraProto but the user can still specify a value for it if they want.
 
-#### What is MessageSendingOptions?
+### What is MessageSendingOptions?
 You may have noticed that almost every method has a `messageSendingOptions` parameter. **As of now, this is useless** but it will be used in the future to define custom settings.
 
 ## Retrieving results
