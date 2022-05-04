@@ -1,4 +1,4 @@
----
+e---
 nav_order: 6
 title: Calling API methods
 ---
@@ -48,7 +48,7 @@ Each method returns its result through `RpcResponse<T>`. If a method returns a L
 - `Error`, returns an instance of RpcError describing the error occured.
 - `Response`, returns the response by the API.
 
-**Exception are raised** in the following cases:
+**Exceptions are raised** in the following cases:
 - When the request **was completed successfully** (meaning that no RpcError was returned) **and the `Error` property is used** an `InvalidOperationException` is thrown.
 - When the request **was not completed successfully** and the `Response` property is used a `RpcException` containing an `RpcError` is thrown.
 
@@ -79,7 +79,7 @@ if (apiCall.RpcCallFailed)
 {
     if (apiCall.Error is FloodWaitError error)
     {
-        _logger.Error("Couldn't reply to the user because the API requires a wait time of: {Time} seconds", error.WaitTime.TotalSecodns);
+        _logger.Error("Couldn't reply to the user because the API requires a wait time of {Time} seconds", error.WaitTime.TotalSeconds);
     }
     else
     {
