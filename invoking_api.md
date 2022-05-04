@@ -1,6 +1,6 @@
 ---
-nav_order: 5
-title: Using the API
+nav_order: 6
+title: Calling API methods
 ---
 # Invoking API Methods
 In order to interact with the Telegram API, CatraProto exposes API methods in the `Api` property in the `TelegramClient` class.
@@ -23,7 +23,7 @@ As you may have noticed, the method not only contains _Async_ at the end of it, 
 For example, for each method that requires a `InputPeer` **an overload is generated to simplify the API** and allow you to use the PeerId struct. You can see it in the EventHandler [example](receiving_updates.md#creating-an-eventhandler).
 
 An example of simplified method is `messages.sendMessage`. This is its TL definition:
-```tl
+```
 messages.sendMessage#d9d75a4 flags:# no_webpage:flags.1?true silent:flags.5?true background:flags.6?true clear_draft:flags.7?true noforwards:flags.14?true peer:InputPeer reply_to_msg_id:flags.0?int message:string random_id:long reply_markup:flags.2?ReplyMarkup entities:flags.3?Vector<MessageEntity> schedule_date:flags.10?int send_as:flags.13?InputPeer = Updates;
 ```
 
