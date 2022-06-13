@@ -1,0 +1,17 @@
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - README.md
+title: CatraProto Docs
+heading_anchors: true
+gh_edit_link: false
+color_scheme: dark
+aux_links:
+  "Source Code":
+    - "//github.com/CatraProto/Client"
+    
+
+remote_theme: just-the-docs/just-the-docs
