@@ -7,7 +7,7 @@ nav_order: 1
 CatraProto is a fully-asynchronous library that implements the MTProto protocol and the Telegram API. 
 This means you can interact with the Telegram API (**as a regular user** as well) **without having any knowledge of the encryption and communication protocol**, it also implements the API so **you won't have to take care of any database implementation or updates handling.**
 
-**This documentation is outdated (v1.0), go [here](../index.md) for the updated documentation**
+If you are looking for the documentation for version 1.0, you can find it [here](/v1.0/index.md).
 
 # Getting started
 ## Retrieving API credentials
@@ -27,6 +27,11 @@ public class EventHandler : IEventHandler
     public EventHandler(TelegramClient client)
     {
         _client = client;
+    }
+
+    public async Task OnSessionUpdateAsync(LoginState newState)
+    {
+        //Please refer to the logging-in page of the documentation
     }
 
     public async Task OnUpdateAsync(UpdateBase update)
@@ -52,71 +57,27 @@ Now that we have written the EventHandler and implemented our own logic, we init
 ```cs
 // Create the SeriLog logger to use.
 var logger = Logger.CreateDefaultLogger();
-
 // We define the parameters used to connect to Telegram. You can change anything you want here (as long as you use an existing lang pack and **don't use official api credentials**)
 var apiSettings = new ApiSettings(YOUR_API_ID, YOUR_API_HASH, "CatraProto", "1.0", "en", "android", "en", "1.0");
-
 // Now, we need to tell CatraProto where to store the session and the data it needs to work with.
 var sessionSettings = new SessionSettings(new FileSerializer($"data/MySession.catra"), new DatabaseSettings("data/MySession.db", 50), sessionName);
-
 // In your my.telegram.org page you can also see there is an addresses for production DCs, and an address for test DCs.
 // You can choose whichever you like based on your needs but keep in mind that test DCs is a completely different environment.
 var connectionInfo = new ConnectionInfo(IPAddress.Parse(DC_IP), IS_TEST, 443, ID);
-
 var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 30);
-
 // We put everything together
 var settings = new ClientSettings(sessionSettings, apiSettings, connectionSettings);
-
 // Instanciate the client
 await using var client = new TelegramClient(settings, logger);
-
 // Set the event handler
 client.SetEventHandler(new EventHandler(client, logger));
 
 // Initialize the client
 var clientState = await client.InitClientAsync();
-
 if(clientState is ClientState.Corrupted)
 {
     //The session is corrupted, you need to delete it and login again.
     return;
-}
-
-if(clientState is ClientState.Unauthenticated)
-{
-    // We need to login, either as a bot or as a user.
-    var login = client.GetLoginFlow();
-    // You can obviously also use Console.ReadLine() to get the phone number for the console
-    var authentication = await login.AsUser(PHONE_NUMBER_HERE, new CodeSettings());
-    // If you want to login as a user, you can just uncomment the line below and comment the line above.
-    //var authentication = await login.AsBotAsync(BOT_TOKEN_HERE);
-    var finished = false;
-    while (!finished)
-    {
-        switch (authentication)
-        {
-            case LoginNeedsCode completeLogin:
-                logger.Information("Now insert the login code: ");
-                authentication = await completeLogin.WithCodeAsync(Console.ReadLine());
-                break;
-            case LoginNeedsSignup signup:
-                logger.Information("Creating account");
-                authentication = await signup.WithProfileData("My CatraProto", "Account");
-                break;
-            case LoginFailed loginFailed:
-                logger.Error("Login failed error {Error}", loginFailed.FailReason);
-                finished = true;
-                break;
-            case LoginSuccessful loginSuccessful:
-                logger.Information("Login successful, user: {User}", loginSuccessful.LoggedUser.ToJson());
-                finished = true;
-                break;
-            default:
-                logger.Error("Type {Authentication} is not supported", authentication);
-                return;
-        }
-    }
 }
 
 logger.Information("Press any key to kill the client");
