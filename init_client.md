@@ -6,7 +6,7 @@ nav_order: 4
 Now that the settings were configured properly and the logger is created we can initialize the client.
 
 ## Instanciating the client
-The `TelegramClient` constructor takes two arguments, the first takes a ClientSettings [instance](library_configuration.md) and the second takes a [logger](logger_configuration.md).
+The `TelegramClient` constructor takes two arguments, the first takes a ClientSettings [instance](library_configuration.md) and the second takes a [logger](logging.md).
 
 Example:
 ```cs

@@ -1,6 +1,6 @@
 ---
 title: Receiving Messages (Updates)
-nav_order: 5
+nav_order: 6
 ---
 # Receiving Updates
 Receiving messages means in fact **receiving an update**. Updates **do not only communicate whether a new message was sent, edited or received but many, many other things** such as a user typing or **in the case of bots** when a user's permissions in a chat have changed.
@@ -23,7 +23,7 @@ public class EventHandler : IEventHandler
 
     public async Task OnSessionUpdateAsync()
     {
-        //login code goes here
+        //login code from the previous page goes here
     }
 
     public async Task OnUpdateAsync(UpdateBase update)

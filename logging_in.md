@@ -1,7 +1,13 @@
-# Logging-in
+---
+title: Handling states and login
+nav_order: 5
+---
+
+# Handling state changes (Logging-In)
 CatraProto sends updates regarding the current session to the `OnSessionUpdateAsync` method of the `IEventHandler` interface. This means you will not just receive updates when the authorization flow changes, but also if the session is invalid. In the examples below, login is implemented in this exact method, but you are free to redirect them wherever you want.
 
-**Note:** This method is invoked in a sequential-manner, this means that you won't receive a new update until you finished processing the new one.
+This first part only convers logging in, to see what the other states mean, navigate to [Other states](#handling-state-changes-other-states)\
+**Note:** This method is invoked in a sequential-manner, this means that you won't receive a new update until you finished processing the old one.
 
 ## How it works  
 The way login works is pretty easy. Some methods, either return `Task<RpcError?>` or `SomeValue?`. In the first case, null is returned when no error has occured, in the second case null is returned when the operation could not be performed (check the logs).\
@@ -10,12 +16,17 @@ The app advances state (i.e from asking for the phone number to asking the sms-c
 If `receivedState >= LoginState.LoggedOut` the app must close the instance, delete the session file and create a new instance, because the session is now invalid.
 
 ## Handling errors
-Some errors are recoverable, which means you can just re-try the query with different parameters, while others are not and the app will receive a new state.\
+Some errors are recoverable, which means you can just re-try the query with different parameters.\
 The only recoverable errors are:
 - `PhoneCodeIncorrectError` which is returned when the provided phone code was entered incorrectly. 
 - `PasswordIncorrectError` which is returned when the provided password was entered incorrectly.
 
-All other errors are supposed to be shown to the user, even if they are `UnknownError`.
+When other errors are returned, a new state is sent to the app.\
+Every error is supposed to be shown to the user, even if they are `UnknownError`.
+
+## Restarting the flow
+Even though it is not present in these examples, if the state is not higher or equal to `LoggedIn` you can call `CancelAsync()` to cancel the current operation.\
+This method does not return any error and just like the other ones, you will receive a new state.
 
 ## Example of user login
 ```cs
@@ -158,7 +169,7 @@ public async Task OnSessionUpdateAsync(LoginState loginState)
         var result = await task;
         if (result is not null)
         {
-            Console.WriteLine($"I'm sorry, the following error occurred while logging in {result}")
+            Console.WriteLine($"I'm sorry, the following error occurred while logging in {result}");
         }
     }
 }
@@ -221,3 +232,13 @@ The code is pretty simple, each time the state changes `OnSessionUpdateAsync` is
 - When the state is _AwaitingLogin_, the app tries to login using the bot token provided in the first parameter of the UseBotTokenAsync method, if an error is returned, it is logged to the user otherwise the app waits until it receives a new state.
 - When the state is _LoggedIn_, the app calls `GetSelfAsync` to retrieve information about the bot and logs it in json-format. The app also checks whether the API call received an error, because the session could have been terminated while we were still handling this update.
 - When the state is >= _LoggedOut_, the app will simply let the user know that it has changed (i.e. the session was terminated and _SESSION_REVOKED_ was received).
+
+# Handling state changes (Other states)
+Other states that are not directly related to the login flow are the following:
+- LoggedOut - When log out is done by calling `LoginManager.LogoutAsync()`
+- SessionRevoked - When the session was revoked from another device
+- AccountBanned - When the account was banned by Telegram
+- AccountDeactivated - When the user deactivated their account
+- KeyDuplicated - When the same session was used at the same time (i.e same session file on two different servers)
+
+Once those are received, the session cannot be used anymore and you will need to create a new session file or wipe the current one. Before doing so, remember to `DisposeAsync()` the current `TelegramClient` instance.
