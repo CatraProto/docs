@@ -1,4 +1,5 @@
 ---
+layout: default
 title: Library Configuration
 nav_order: 2
 ---

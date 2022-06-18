@@ -1,4 +1,5 @@
 ---
+layout: default
 nav_order: 6
 title: Calling API methods
 ---
@@ -16,31 +17,10 @@ await _client.Api.CloudChatsApi.Messages.SendMessageAsync(...);
 
 As you may have noticed, the method not only contains _Async_ at the end of it, but it is actually inside the `CloudChatsApi` property. This is because we need to differenciate between the MTProto API (**not exposed to the user**) and the future SecretChats API.
 
-### Simplified API
-**CatraProto tries to simplify the API as much as possible** allowing you not to care about implementation details such as a peer database. 
+## Invokation of methods that require authorization
+Usually, each method that requires authorization (i.e. being logged in as a user/bot) **is postponed** until the login process is complete.
 
-This is done by using the `PeerId` struct, exposing `long` directly for IDs where possible, and making some parameters optional.
-
-### An in-depth look at how CatraProto simplifies the API
-For example, for each method that requires a `InputPeer` **an overload is generated to simplify the API** and allow you to use the PeerId struct. You can see it in the EventHandler [example](receiving_updates.md#creating-an-eventhandler).
-
-An example of simplified method is `messages.sendMessage`. This is its TL definition:
-```
-messages.sendMessage#d9d75a4 flags:# no_webpage:flags.1?true silent:flags.5?true background:flags.6?true clear_draft:flags.7?true noforwards:flags.14?true peer:InputPeer reply_to_msg_id:flags.0?int message:string random_id:long reply_markup:flags.2?ReplyMarkup entities:flags.3?Vector<MessageEntity> schedule_date:flags.10?int send_as:flags.13?InputPeer = Updates;
-```
-
-This is how the methods is converted:
-```cs
-Task<RpcResponse<UpdatesBase>> SendMessageAsync(PeerId peer, string message, bool noWebpage = false, bool silent = false, bool background = false, bool clearDraft = false, bool noforwards = false, int? replyToMsgId = null, long? randomId = null, CatraProto.Client.TL.Schemas.CloudChats.ReplyMarkupBase? replyMarkup = null, List<CatraProto.Client.TL.Schemas.CloudChats.MessageEntityBase>? entities = null, int? scheduleDate = null, PeerId? sendAs = null, CatraProto.Client.Connections.MessageScheduling.MessageSendingOptions? messageSendingOptions = null, CancellationToken cancellationToken = default)
-```
-
-**Here's a list of changes**:
-- The `flags` parameter was removed as **it is handled by CatraProto**.
-- The `InputPeer` type was replaced by `PeerId`. This means that **CatraProto will also automatically fetch all the data it needs** about the peer to send the message. 
-- The `random_id` parameter was made nullable. It is handled by CatraProto but the user can still specify a value for it if they want.
-
-### What is MessageSendingOptions?
-You may have noticed that almost every method has a `messageSendingOptions` parameter. **As of now, this is useless** but it will be used in the future to define custom settings.
+**There are some exceptions**, for now, the only method which returns `UnauthorizedUserError` is `Users.GetSelfAsync()`
 
 ## Retrieving results
 Each method returns its result through `RpcResponse<T>`. If a method returns a List (or Vector, in the TL) the return type will be `RpcResponse<RpcVector<T>>` (`RpcVector<T>` inherits from `List<T>`).
@@ -70,11 +50,6 @@ if (apiCall.RpcCallFailed)
 var result = apiCall.Response;
 ```
 
-## Invokation of methods that require authorization
-Usually, each method that requires authorization (i.e. being logged in as a user/bot) **is postponed** until the login process is complete.
-
-**There are some exceptions**, for now, the only method which returns `UnauthorizedUserError` is `Users.GetSelfAsync()`
-
 ## Handling errors
 To provide a cleaner API, CatraProto parses known errors and provides a simple API to interact with them. If an **error is not known to CatraProto, you will receive an instance of UnknownError**.
 
@@ -98,3 +73,29 @@ if (apiCall.RpcCallFailed)
 ```
 
 RpcError also **overloads** `ToString()`. The error is printed in the following format: `[Code][Message][Description]`.
+
+### Simplified API
+**CatraProto tries to simplify the API as much as possible** allowing you not to care about implementation details such as a peer database. 
+
+This is done by using the `PeerId` struct, exposing `long` directly for IDs where possible, and making some parameters optional.
+
+### An in-depth look at how CatraProto simplifies the API
+For example, for each method that requires a `InputPeer` **an overload is generated to simplify the API** and allow you to use the PeerId struct. You can see it in the EventHandler [example](receiving_updates.md#creating-an-eventhandler).
+
+An example of simplified method is `messages.sendMessage`. This is its TL definition:
+```
+messages.sendMessage#d9d75a4 flags:# no_webpage:flags.1?true silent:flags.5?true background:flags.6?true clear_draft:flags.7?true noforwards:flags.14?true peer:InputPeer reply_to_msg_id:flags.0?int message:string random_id:long reply_markup:flags.2?ReplyMarkup entities:flags.3?Vector<MessageEntity> schedule_date:flags.10?int send_as:flags.13?InputPeer = Updates;
+```
+
+This is how the methods is converted:
+```cs
+Task<RpcResponse<UpdatesBase>> SendMessageAsync(PeerId peer, string message, bool noWebpage = false, bool silent = false, bool background = false, bool clearDraft = false, bool noforwards = false, int? replyToMsgId = null, long? randomId = null, CatraProto.Client.TL.Schemas.CloudChats.ReplyMarkupBase? replyMarkup = null, List<CatraProto.Client.TL.Schemas.CloudChats.MessageEntityBase>? entities = null, int? scheduleDate = null, PeerId? sendAs = null, CatraProto.Client.Connections.MessageScheduling.MessageSendingOptions? messageSendingOptions = null, CancellationToken cancellationToken = default)
+```
+
+**Here's a list of changes**:
+- The `flags` parameter was removed as **it is handled by CatraProto**.
+- The `InputPeer` type was replaced by `PeerId`. This means that **CatraProto will also automatically fetch all the data it needs** about the peer to send the message. 
+- The `random_id` parameter was made nullable. It is handled by CatraProto but the user can still specify a value for it if they want.
+
+### What is MessageSendingOptions?
+You may have noticed that almost every method has a `messageSendingOptions` parameter. **As of now, this is useless** but it will be used in the future to define custom settings.

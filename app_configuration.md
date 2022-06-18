@@ -1,4 +1,5 @@
 ---
+layout: default
 title: App Configuration
 nav_order: 2
 ---

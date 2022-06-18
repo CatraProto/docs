@@ -1,4 +1,5 @@
 ---
+layout: default
 title: Logger Configuration
 nav_order: 3
 ---
@@ -6,7 +7,7 @@ nav_order: 3
 CatraProto uses [Serilog](https://serilog.net) for logging. You can use the helper method `Logger.CreateDefaultLogger()` to create a default logger which prints to console. **If no parameter is provided, the method will create a logger with logging level set to `LogEventLevel.Information`**.
 
 You can provide a `LoggingLevelSwitch` to `Logger.CreateDefaultLogger()` if you want to change logging level.\
-You can also specify a console theme using the `templateTheme` parameter.
+You can also specify a console theme using the `templateTheme` parameter. By default, the _Code_ theme is used.
 
 Example:
 ```cs

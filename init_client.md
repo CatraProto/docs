@@ -1,6 +1,7 @@
 ---
+layout: default
 title: Using the library
-nav_order: 4
+nav_order: 5
 ---
 ## Using the library
 Now that the settings were configured properly and the logger is created we can initialize the client.
@@ -13,6 +14,15 @@ Example:
 var client = new TelegramClient(settings, logger);
 ```
 
+## Setting the event handler
+After having declared our event handler we must set it by calling `client.SetEventHandler()`. If this method is called when an event handler is already set it will throw an `InvalidOperationException`.
+
+Example:
+```cs
+client.SetEventHandler(new EventHandler(client));
+```
+
+
 ## Initialize the client
 After creating the instance, we can use the `client.InitClientAsync()` method to initialize and start up the library.
 
@@ -24,7 +34,6 @@ Example:
 ```cs
 var state = await client.InitClientAsync();
 ```
-
 
 ## Saving information
 At any time, the session can be manually saved by calling `client.ForceSaveAsync();`. 
