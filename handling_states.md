@@ -5,7 +5,7 @@ nav_order: 4
 ---
 
 # Handling state changes (Logging-In)
-CatraProto sends updates regarding the current session to the `OnSessionUpdateAsync` method of the `IEventHandler` interface. This means you will not just receive updates when the authorization flow changes, but also if the session is invalid. In the examples below, login is implemented in this exact method, but you are free to redirect them wherever you want.
+CatraProto sends updates regarding the current session to the `OnSessionUpdateAsync` method of the `IEventHandler` interface. This means you will not just receive updates when the authorization flow changes, but also if the session is invalid. In the examples below, login is implemented in this method.
 
 This first part only covers logging in, to see what the other states mean, navigate to [other states](#handling-state-changes-other-states).\
 **Note:** This method is invoked in a sequential-manner, this means that you won't receive a new update until you finished processing the old one.
@@ -23,7 +23,7 @@ The only recoverable errors are:
 - `PasswordIncorrectError` which is returned when the provided password was entered incorrectly.
 
 When other errors are returned, a new state is sent to the app.\
-Every error is supposed to be shown to the user, even if they are `UnknownError`.
+Every error is supposed to be shown to the user, even if it is `UnknownError`.
 
 ## Restarting the flow
 Even though it is not present in these examples, if the state is not higher or equal to `LoggedIn` you can call `CancelAsync()` to cancel the current operation.\
