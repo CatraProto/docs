@@ -5,14 +5,14 @@ nav_order: 4
 ---
 
 # Handling state changes (Logging-In)
-CatraProto sends updates regarding the current session to the `OnSessionUpdateAsync` method of the `IEventHandler` interface. This means you will not just receive updates when the authorization flow changes, but also if the session is invalid. In the examples below, login is implemented in this method.
+CatraProto sends updates regarding the current session to the `OnSessionUpdateAsync` method of the `IEventHandler` interface. This means you will not just receive updates when the authorization flow changes, but also if the session becomes invalid. In the examples below, login is implemented in this method.
 
 This first part only covers logging in, to see what the other states mean, navigate to [other states](#handling-state-changes-other-states).\
 **Note:** This method is invoked in a sequential-manner, this means that you won't receive a new update until you finished processing the old one.
 
 ## How it works  
-The way login works is pretty easy. Some methods, either return `Task<RpcError?>` or `SomeValue?`. In the first case, null is returned when no error has occured, in the second case null is returned when the operation could not be performed (check the logs).\
-The app advances state (i.e from asking for the phone number to asking the sms-code) when the according update is received. 
+The way login works is pretty easy. Some methods either return `Task<RpcError?>` or `SomeValue?`. In the first case, null is returned when no error has occured, in the second case null is returned when the operation could not be performed (check the logs).\
+The app advances state (i.e from asking for the phone number to asking the sms-code) when the corresponding update is received. 
 
 If `receivedState >= LoginState.LoggedOut` the app must close the instance, delete the session file and create a new instance, because the session is now invalid.
 
@@ -27,7 +27,7 @@ Every error is supposed to be shown to the user, even if it is `UnknownError`.
 
 ## Restarting the flow
 Even though it is not present in these examples, if the state is not higher or equal to `LoggedIn` you can call `CancelAsync()` to cancel the current operation.\
-This method does not return any error and just like the other ones, you will receive a new state.
+This method does not return cannot return errors. As always, you will receive a new state.
 
 ## Example of user login
 ```cs

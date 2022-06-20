@@ -1,6 +1,6 @@
 ---
 layout: default
-nav_order: 6
+nav_order: 7
 title: Calling API methods
 ---
 # Invoking API Methods

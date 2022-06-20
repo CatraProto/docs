@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Custom session serializers
-nav_order: 7
+nav_order: 9
 ---
 # Custom session serializers
 CatraProto ships with `FileSerializer` which allows you to serialize the session to a specific file. In case you don't like this behaviour and want to store your session somewhere else (for example a database) CatraProto allows that by implementing the `IAsyncSessionSerializer`.

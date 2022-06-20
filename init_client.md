@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Using the library
-nav_order: 5
+nav_order: 6
 ---
 ## Using the library
 Now that the settings were configured properly and the logger is created we can initialize the client.
