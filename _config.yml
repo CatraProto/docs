@@ -13,4 +13,4 @@ aux_links:
   "Source Code":
     - "//github.com/CatraProto/Client"    
 
-theme: just-the-docs
+remote_theme: just-the-docs
