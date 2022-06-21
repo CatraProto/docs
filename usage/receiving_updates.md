@@ -1,6 +1,8 @@
 ---
+layout: default
 title: Receiving Messages (Updates)
-nav_order: 5
+nav_order: 3
+parent: Using the library
 ---
 # Receiving Updates
 Receiving messages means in fact **receiving an update**. Updates **do not only communicate whether a new message was sent, edited or received but many, many other things** such as a user typing or **in the case of bots** when a user's permissions in a chat have changed.
@@ -19,6 +21,11 @@ public class EventHandler : IEventHandler
     public EventHandler(TelegramClient client)
     {
         _client = client;
+    }
+
+    public async Task OnSessionUpdateAsync()
+    {
+        //login code from the previous page goes here
     }
 
     public async Task OnUpdateAsync(UpdateBase update)
@@ -40,14 +47,6 @@ public class EventHandler : IEventHandler
 
 The following code checks whether the update is an instance of `UpdateNewMessage` and that the Message inside it is an instance of `Message` with the `Out` property set to false. If the check is successful it makes sure the message was received inside a private chat and then replies to the user.
 
-## Setting the event handler
-After having declared our event handler we must set it by calling `client.SetEventHandler()`. If this method is called when an event handler is already set it will throw an InvalidOperationException.
-
-Example:
-```cs
-client.SetEventHandler(new EventHandler(client));
-```
-
 ## Avoiding older messages
 When first logging in, all updates from when the client was created are fetched. This may lead to undesired behaviour as you may not want your bot to start replying to older messages. To mitigate this, you can check the message's date.
 Example:
@@ -62,3 +61,5 @@ Where `StartTime` is the unix timestamp value of when you started the script. Yo
 
 ## How updates are delivered
 In order to **avoid flooding** the event handler some internal queues are used. There is a queue for each peer and **if an update is not bound to a peer it is added to a common queue**. This means that **each update is separated based on which chat it was sent in** and **it will wait** to trigger your event handler **if an updated from the same chat is still being processed.**
+
+This behaviour can be disabled through the UpdatesSettings class as described [here](/library_configuration.md).

@@ -1,6 +1,8 @@
 ---
+layout: default
 title: App Configuration
-nav_order: 2
+nav_order: 1
+parent: Initial configuration
 ---
 
 # App Configuration

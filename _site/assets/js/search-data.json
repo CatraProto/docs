@@ -1,0 +1,374 @@
+{"0": {
+    "doc": "App Configuration",
+    "title": "App Configuration",
+    "content": "The Telegram API requires every app to have its own combination of api_id and api_hash and provides DC configuration for every app. ",
+    "url": "http://localhost:4000/configuration/app_configuration.html",
+    "relUrl": "/configuration/app_configuration.html"
+  },"1": {
+    "doc": "App Configuration",
+    "title": "What are API credentials?",
+    "content": "When using the API, the server uses these values in order to identify what app is being used by the user to connect to Telegram. You may think that using official API credentials, retrieved by decompiling official apps, may allow you no to be restricted as often by Telegram. This is a wrong assumption. The server can detect such cases and ban the abusing account. Keep in mind that this is also against the TOS. ",
+    "url": "http://localhost:4000/configuration/app_configuration.html#what-are-api-credentials",
+    "relUrl": "/configuration/app_configuration.html#what-are-api-credentials"
+  },"2": {
+    "doc": "App Configuration",
+    "title": "How to retrieve API credentials",
+    "content": "Log in to my.telegram.org and click on API development tools. If this is your first time, the website will ask you to create your app. After filling in the form and having created your application, the website will show you your app’s configuration. For no reason should you share your API credentials. If someone uses your credentials to abuse the API or violate the Telegram TOS or API TOS your account(s) may get banned. ",
+    "url": "http://localhost:4000/configuration/app_configuration.html#how-to-retrieve-api-credentials",
+    "relUrl": "/configuration/app_configuration.html#how-to-retrieve-api-credentials"
+  },"3": {
+    "doc": "App Configuration",
+    "title": "Available MTProto servers",
+    "content": "In this same webpage, you have surely noticed that there is a dedicated section containing information (a pair of IP and Public Key) regarding the default DCs assigned to your app. RSA Keys are built-in into CatraProto, so you don’t have to care about them. It is a good idea to use the provided IP(s). Keep in mind that when using test DCs, this must be specified in the ConnectionInfo constructor, as follows: . var connectionSettings = new ConnectionInfo(IPAddress.Parse(IP), IS_TEST, PORT, DC_ID); . ",
+    "url": "http://localhost:4000/configuration/app_configuration.html#available-mtproto-servers",
+    "relUrl": "/configuration/app_configuration.html#available-mtproto-servers"
+  },"4": {
+    "doc": "Custom session serializers",
+    "title": "Custom session serializers",
+    "content": "CatraProto ships with FileSerializer which allows you to serialize the session to a specific file. In case you don’t like this behaviour and want to store your session somewhere else (for example a database) CatraProto allows that by implementing the IAsyncSessionSerializer. ",
+    "url": "http://localhost:4000/custom_serializer.html",
+    "relUrl": "/custom_serializer.html"
+  },"5": {
+    "doc": "Custom session serializers",
+    "title": "What does a session file contain?",
+    "content": "Session files are not to be confused with the database. The database stores all information required to keep a local cache of data (used for example to resolve access_hash(es)). The sessions stores the authentication keys used to interact with the server and to store the current logged in user as well as the current updates state. ",
+    "url": "http://localhost:4000/custom_serializer.html#what-does-a-session-file-contain",
+    "relUrl": "/custom_serializer.html#what-does-a-session-file-contain"
+  },"6": {
+    "doc": "Custom session serializers",
+    "title": "How are they serialized?",
+    "content": "Session files are nothing more than binary blobs serialized with TL. ",
+    "url": "http://localhost:4000/custom_serializer.html#how-are-they-serialized",
+    "relUrl": "/custom_serializer.html#how-are-they-serialized"
+  },"7": {
+    "doc": "Custom session serializers",
+    "title": "How to implement the IAsyncSessionSerializer interface",
+    "content": "The IAsyncSessionSerializer interface declares two methods . | Task&lt;byte[]&gt; ReadAsync(ILogger logger, CancellationToken cancellationToken) - This method is only used once at startup in order to retrieve the session from your storage and store in memory. If no session file is present, an empty array must be returned. | Task SaveAsync(byte[] data, ILogger logger, CancellationToken token) - This method is used to save the session file to your storage and can be called multiple times during the lifetime of the TelegramClient object, even concurrently. | . Even though SaveAsync can be called concurrently, you will always receive a fully constructed session, but you may need to lock to avoid two (or more) concurrent calls overwriting each other. If you need an example implementation, you can use the FileSerializer. ",
+    "url": "http://localhost:4000/custom_serializer.html#how-to-implement-the-iasyncsessionserializer-interface",
+    "relUrl": "/custom_serializer.html#how-to-implement-the-iasyncsessionserializer-interface"
+  },"8": {
+    "doc": "Handling states and Logging-In",
+    "title": "Handling state changes (Logging-In)",
+    "content": "CatraProto sends updates regarding the current session to the OnSessionUpdateAsync method of the IEventHandler interface. This means you will not just receive updates when the authorization flow changes, but also if the session becomes invalid. In the examples below, login is implemented in this method. This first part only covers logging in, to see what the other states mean, navigate to other states. Note: This method is invoked in a sequential-manner, this means that you won’t receive a new update until you finished processing the old one. ",
+    "url": "http://localhost:4000/usage/handling_states.html#handling-state-changes-logging-in",
+    "relUrl": "/usage/handling_states.html#handling-state-changes-logging-in"
+  },"9": {
+    "doc": "Handling states and Logging-In",
+    "title": "How it works",
+    "content": "The way login works is pretty easy. Some methods either return Task&lt;RpcError?&gt; or SomeValue?. In the first case, null is returned when no error has occured, in the second case null is returned when the operation could not be performed (check the logs). The app advances state (i.e from asking for the phone number to asking the sms-code) when the corresponding update is received. If receivedState &gt;= LoginState.LoggedOut the app must close the instance, delete the session file and create a new instance, because the session is now invalid. ",
+    "url": "http://localhost:4000/usage/handling_states.html#how-it-works",
+    "relUrl": "/usage/handling_states.html#how-it-works"
+  },"10": {
+    "doc": "Handling states and Logging-In",
+    "title": "Handling errors",
+    "content": "Some errors are recoverable, which means you can just re-try the query with different parameters. The only recoverable errors are: . | PhoneCodeIncorrectError which is returned when the provided phone code was entered incorrectly. | PasswordIncorrectError which is returned when the provided password was entered incorrectly. | . When other errors are returned, a new state is sent to the app. Every error is supposed to be shown to the user, even if it is UnknownError. ",
+    "url": "http://localhost:4000/usage/handling_states.html#handling-errors",
+    "relUrl": "/usage/handling_states.html#handling-errors"
+  },"11": {
+    "doc": "Handling states and Logging-In",
+    "title": "Restarting the flow",
+    "content": "Even though it is not present in these examples, if the state is not higher or equal to LoggedIn you can call CancelAsync() to cancel the current operation. This method does not return cannot return errors. As always, you will receive a new state. ",
+    "url": "http://localhost:4000/usage/handling_states.html#restarting-the-flow",
+    "relUrl": "/usage/handling_states.html#restarting-the-flow"
+  },"12": {
+    "doc": "Handling states and Logging-In",
+    "title": "Example of user login",
+    "content": "public async Task OnSessionUpdateAsync(LoginState loginState) { Task&lt;RpcError?&gt;? task = null; if (loginState is LoginState.AwaitingLogin) { char finalChoice; while (true) { Console.Write(\"Welcome! Would you like to login as a bot or as a user? (b/u): \"); var readLine = Console.ReadLine(); if (readLine is null || readLine.Length != 1 || (readLine[0] != 'u' &amp;&amp; readLine[0] != 'b')) { Console.WriteLine(\"I'm sorry but this option is invalid\"); continue; } finalChoice = readLine[0]; break; } if (finalChoice == 'u') { Console.Write(\"You've selected login as user. Please enter the phone number: \"); task = _client.LoginManager.UsePhoneNumberAsync(Console.ReadLine() ?? \"\", new CodeSettings()); } else { Console.Write(\"You've selected login as bot. Please enter the bot token: \"); task = _client.LoginManager.UseBotTokenAsync(Console.ReadLine() ?? \"\"); } var result = await task; if (result is BotTokenIncorrectError) { Console.WriteLine(\"I'm sorry, but this token does not work. Make sure you're copying it correctly.\"); return; } else if (result is PhoneNumberIncorrectError) { Console.WriteLine(\"I'm sorry, but this phone number does not work. Make sure you're typing every digit correctly.\"); return; } } else if (loginState is LoginState.AwaitingCode) { Console.Write(\"Please insert the login code or r to resend it: \"); while (true) { var read = Console.ReadLine(); if (read is null) { continue; } if (read == \"r\") { task = _client.LoginManager.ResendCodeAsync(); var result = await task; if (result is null) { var codeType = _client.LoginManager.GetCodeTypes()!.Value.CodeType; Console.WriteLine($\"The code was resent successfully. Code type {codeType}\"); } } else { task = _client.LoginManager.UseLoginCodeAsync(read); var result = await task; if (result is not null) { if (result is PhoneCodeIncorrectError) { Console.WriteLine(\"The given phone code was invalid, try again or press r to resend it: \"); continue; } } break; } } } else if (loginState is LoginState.AwaitingTermsAcceptance) { Console.WriteLine(_client.LoginManager.GetTermsOfService()!.Text); Console.Write(\"Great! Please accept the terms of service (y/n): \"); _client.LoginManager.SetTerms(Console.ReadKey().KeyChar == 'y'); Console.WriteLine(); } else if (loginState is LoginState.AwaitingRegistration) { Console.WriteLine(\"It looks like this phone number is not registered.\"); var name = string.Empty; while (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(name)) { Console.Write(\"What's your first name? \"); name = Console.ReadLine(); } Console.Write($\"Ok {name}. What about your last name (Press enter to leave blank)? \"); var lastName = Console.ReadLine() ?? \"\"; task = _client.LoginManager.UseProfileDataAsync(name, lastName); } else if (loginState is LoginState.AwaitingPassword) { Console.Write(\"Yay! Please type your 2FA password here: \"); while (true) { task = _client.LoginManager.UsePasswordAsync(Console.ReadLine() ?? \"\"); var error = await task; if (error is not null) { if (error is PasswordIncorrectError) { Console.WriteLine(\"Oops! The password is incorrect. Please try again.\"); continue; } break; } } } else if (loginState is LoginState.LoggedIn) { var getSelf = await _client.Api.CloudChatsApi.Users.GetSelfAsync(); if (getSelf.RpcCallFailed) { Console.WriteLine($\"Something went wrong and I could not fetch the bot's profile. Error {getSelf.Error}\"); } Console.WriteLine($\"Wow! We are logged in! We are: {getSelf.Response}\"); } else if (loginState &gt;= LoginState.LoggedOut) { Console.WriteLine($\"Hey! The session is dead. I received the following state: {loginState}\"); } if (task is not null) { var result = await task; if (result is not null) { Console.WriteLine($\"I'm sorry, the following error occurred while logging in {result}\"); } } } . Please note that if you use Console.ReadLine to prevent the app from quitting, you’ll need to do it in another way or to call it only when the login is finished. The latter is done in the full example using a TaskCompletionSource. Code explaination . Even if at first sight this might look very complex and hard to understand, this explaination will try to make it as simple as possible. Remember that each time an API call is made, it is assigned to the task variable so that at the end of the method, it will be awaited and the error, if present, will be shown to the user. | When the state is AwaitingLogin, the app keeps asking the user whether they want to login as a user or as a bot until a a valid answer is received. If they choose to login as a user, the app will ask for a phone number, if they choose to login as a bot the app will ask for a bot token. The app awaits the API call to see if an error occurred, and if it is one of the known login-related errors it will show a better message to the user. | When the state is AwaitingPhoneCode, the app sent the phone code to the user and keeps asking the user whether they want to try a code or to resend it, until no error is returned or another error (such as flood wait) is received. | When the state is AwaitingPassword, the account is protected by 2FA (Two-Factor Authentication) and the app keeps asking the user for a valid password until login succeeds or an error different from PasswordIncorrectError from is returned. | When the state is AwaitingTermsAcceptance the app shows the user the terms of service and asks the user whether they accept them or not. | When the state is AwaitingRegistration the app asks the user for a first name and a last name (optionally) to register the user to Telegram. | When the state is LoggedIn, the app calls GetSelfAsync to retrieve information about the bot and logs it in json-format. The app also checks whether the API call received an error, because the session could have been terminated while we were still handling this update. | When the state is &gt;= LoggedOut, the app will simply let the user know that it has changed (i.e. the session was terminated and SESSION_REVOKED was received). | . ",
+    "url": "http://localhost:4000/usage/handling_states.html#example-of-user-login",
+    "relUrl": "/usage/handling_states.html#example-of-user-login"
+  },"13": {
+    "doc": "Handling states and Logging-In",
+    "title": "Example of bot login",
+    "content": "This is what handling a bot session from a simple console app looks like: . public async Task OnSessionUpdateAsync(LoginState loginState) { if (loginState is LoginState.AwaitingLogin) { var r = await _client.LoginManager.UseBotTokenAsync(\"5525446665:AAH95cataglrak0Mpro9Awto4gud0zbUM\"); if (r is not null) { Console.WriteLine($\"Could not login, the following error occurred: {r}\"); } } else if (loginState is LoginState.LoggedIn) { var getSelf = await _client.Api.CloudChatsApi.Users.GetSelfAsync(); if (getSelf.RpcCallFailed) { Console.WriteLine($\"Something went wrong and I could not fetch the bot's profile. Error {getSelf.Error}\"); } Console.WriteLine($\"We are logged-in as {r.Response.ToJson()}\"); } else if (loginState &gt;= LoginState.LoggedOut) { Console.WriteLine($\"Received state {loginState}\"); } } . Code explaination . The code is pretty simple, each time the state changes OnSessionUpdateAsync is invoked and the app checks whether the state is AwaitingLogin, LoggedIn or something else. | When the state is AwaitingLogin, the app tries to login using the bot token provided in the first parameter of the UseBotTokenAsync method, if an error is returned, it is logged to the user otherwise the app waits until it receives a new state. | When the state is LoggedIn, the app calls GetSelfAsync to retrieve information about the bot and logs it in json-format. The app also checks whether the API call received an error, because the session could have been terminated while we were still handling this update. | When the state is &gt;= LoggedOut, the app will simply let the user know that it has changed (i.e. the session was terminated and SESSION_REVOKED was received). | . ",
+    "url": "http://localhost:4000/usage/handling_states.html#example-of-bot-login",
+    "relUrl": "/usage/handling_states.html#example-of-bot-login"
+  },"14": {
+    "doc": "Handling states and Logging-In",
+    "title": "Handling state changes (Other states)",
+    "content": "Other states that are not directly related to the login flow are the following: . | LoggedOut - When log out is done by calling LoginManager.LogoutAsync() | SessionRevoked - When the session was revoked from another device | AccountBanned - When the account was banned by Telegram | AccountDeactivated - When the user deactivated their account | KeyDuplicated - When the same session was used at the same time (i.e same session file on two different servers) | . Once those are received, the session cannot be used anymore and you will need to create a new session file or wipe the current one. Before doing so, remember to DisposeAsync() the current TelegramClient instance. ",
+    "url": "http://localhost:4000/usage/handling_states.html#handling-state-changes-other-states",
+    "relUrl": "/usage/handling_states.html#handling-state-changes-other-states"
+  },"15": {
+    "doc": "Handling states and Logging-In",
+    "title": "Handling states and Logging-In",
+    "content": " ",
+    "url": "http://localhost:4000/usage/handling_states.html",
+    "relUrl": "/usage/handling_states.html"
+  },"16": {
+    "doc": "Using the library",
+    "title": "Using the library",
+    "content": "In this section of the documentation, we’ll talk about writing states handling and using CatraProto. | Calling API methods - Using the API | Handling States and Logging-In - Implementing login logic and handling session state changes | Receiving Messages (Updates) - Receiving and replying to updates and messages | Library initialization - Initializing the library and to start using it | . ",
+    "url": "http://localhost:4000/usage/",
+    "relUrl": "/usage/"
+  },"17": {
+    "doc": "Initial configuration",
+    "title": "Initial configuration",
+    "content": "In this section of the documentation, we’ll talk about configuring CatraProto for the first time. | App Configuration - Retrieving API Credentials | Library Configuration - Configuring the library and providing the API Credentials | Logger Configuration - Configuring the logger | . ",
+    "url": "http://localhost:4000/configuration/",
+    "relUrl": "/configuration/"
+  },"18": {
+    "doc": "Enhancing your experience",
+    "title": "Initial configuration",
+    "content": "In this section of the documentation, we’ll talk about enhancing your experience with useful tools provided by CatraProto. | Text formatting - Making beautiful texts | Json Serialization - JSON-Serializing TL Objects | . ",
+    "url": "http://localhost:4000/enhancing/#initial-configuration",
+    "relUrl": "/enhancing/#initial-configuration"
+  },"19": {
+    "doc": "Enhancing your experience",
+    "title": "Enhancing your experience",
+    "content": " ",
+    "url": "http://localhost:4000/enhancing/",
+    "relUrl": "/enhancing/"
+  },"20": {
+    "doc": "Introduction",
+    "title": "What is CatraProto?",
+    "content": "CatraProto is a fully-asynchronous library that implements the MTProto protocol and the Telegram API. This means you can interact with the Telegram API (as a regular user as well) without having any knowledge of the encryption and communication protocol. It also implements many aspects of the API so you won’t have to take care of any database implementation or updates handling. ",
+    "url": "http://localhost:4000/#what-is-catraproto",
+    "relUrl": "/#what-is-catraproto"
+  },"21": {
+    "doc": "Introduction",
+    "title": "Getting started",
+    "content": "To get started, please visit the Getting Started section of the documentation. ",
+    "url": "http://localhost:4000/#getting-started",
+    "relUrl": "/#getting-started"
+  },"22": {
+    "doc": "Introduction",
+    "title": "Stay in touch",
+    "content": "We also have a Telegram Channel where important information will be published. ",
+    "url": "http://localhost:4000/#stay-in-touch",
+    "relUrl": "/#stay-in-touch"
+  },"23": {
+    "doc": "Introduction",
+    "title": "Getting support",
+    "content": "You can create tickets on GitHub if you need help, or if you feel more comfortable you’ll be more than welcome in our support group . ",
+    "url": "http://localhost:4000/#getting-support",
+    "relUrl": "/#getting-support"
+  },"24": {
+    "doc": "Introduction",
+    "title": "Introduction",
+    "content": " ",
+    "url": "http://localhost:4000/",
+    "relUrl": "/"
+  },"25": {
+    "doc": "Library initialization",
+    "title": "Initializing the library",
+    "content": "Now that the settings were configured properly and the logger is created we can initialize the client. ",
+    "url": "http://localhost:4000/usage/init_client.html#initializing-the-library",
+    "relUrl": "/usage/init_client.html#initializing-the-library"
+  },"26": {
+    "doc": "Library initialization",
+    "title": "Instanciating the client",
+    "content": "The TelegramClient constructor takes two arguments, the first takes a ClientSettings instance and the second takes a logger. Example: . var client = new TelegramClient(settings, logger); . ",
+    "url": "http://localhost:4000/usage/init_client.html#instanciating-the-client",
+    "relUrl": "/usage/init_client.html#instanciating-the-client"
+  },"27": {
+    "doc": "Library initialization",
+    "title": "Setting the event handler",
+    "content": "After having declared our event handler we must set it by calling client.SetEventHandler(). If this method is called when an event handler is already set it will throw an InvalidOperationException. Example: . client.SetEventHandler(new EventHandler(client)); . ",
+    "url": "http://localhost:4000/usage/init_client.html#setting-the-event-handler",
+    "relUrl": "/usage/init_client.html#setting-the-event-handler"
+  },"28": {
+    "doc": "Library initialization",
+    "title": "Initialize the client",
+    "content": "After creating the instance, we can use the client.InitClientAsync() method to initialize and start up the library. This method returns a ClientState enum which represents the following states: . | Working, when the session file was read successfully. | Corrupted, this means the session file is corrupted. The session must be recreated and the login operation must be performed again. | . Example: . var state = await client.InitClientAsync(); . ",
+    "url": "http://localhost:4000/usage/init_client.html#initialize-the-client",
+    "relUrl": "/usage/init_client.html#initialize-the-client"
+  },"29": {
+    "doc": "Library initialization",
+    "title": "Saving information",
+    "content": "At any time, the session can be manually saved by calling client.ForceSaveAsync();. ",
+    "url": "http://localhost:4000/usage/init_client.html#saving-information",
+    "relUrl": "/usage/init_client.html#saving-information"
+  },"30": {
+    "doc": "Library initialization",
+    "title": "Disposing the client",
+    "content": "In order to properly shutdown, the instance must be disposed. You can do this, by declaring the instance with await using: . await using var client = new TelegramClient(settings, logger); . Or by manually calling client.DiposeAsync() . await client.DisposeAsync(); . Warning: Before disposing the client it is recommended to save the session in order not to lose the current updates state and other important information. ",
+    "url": "http://localhost:4000/usage/init_client.html#disposing-the-client",
+    "relUrl": "/usage/init_client.html#disposing-the-client"
+  },"31": {
+    "doc": "Library initialization",
+    "title": "Library initialization",
+    "content": " ",
+    "url": "http://localhost:4000/usage/init_client.html",
+    "relUrl": "/usage/init_client.html"
+  },"32": {
+    "doc": "Calling API methods",
+    "title": "Invoking API Methods",
+    "content": "In order to interact with the Telegram API, CatraProto exposes API methods in the Api property in the TelegramClient class. ",
+    "url": "http://localhost:4000/usage/invoking_api.html#invoking-api-methods",
+    "relUrl": "/usage/invoking_api.html#invoking-api-methods"
+  },"33": {
+    "doc": "Calling API methods",
+    "title": "Calling the methods",
+    "content": "Methods follow the same namespacing as they are defined in the TL scheme provided by Telegram. Of course, cancellation is supported by providing a CancellationToken. For example, calling messages.sendMessage looks like this: . await _client.Api.CloudChatsApi.Messages.SendMessageAsync(...); . As you may have noticed, the method not only contains Async at the end of it, but it is actually inside the CloudChatsApi property. This is because we need to differenciate between the MTProto API (not exposed to the user) and the future SecretChats API. ",
+    "url": "http://localhost:4000/usage/invoking_api.html#calling-the-methods",
+    "relUrl": "/usage/invoking_api.html#calling-the-methods"
+  },"34": {
+    "doc": "Calling API methods",
+    "title": "Invokation of methods that require authorization",
+    "content": "Usually, each method that requires authorization (i.e. being logged in as a user/bot) is postponed until the login process is complete. There are some exceptions, for now, the only method which returns UnauthorizedUserError is Users.GetSelfAsync() . ",
+    "url": "http://localhost:4000/usage/invoking_api.html#invokation-of-methods-that-require-authorization",
+    "relUrl": "/usage/invoking_api.html#invokation-of-methods-that-require-authorization"
+  },"35": {
+    "doc": "Calling API methods",
+    "title": "Retrieving results",
+    "content": "Each method returns its result through RpcResponse&lt;T&gt;. If a method returns a List (or Vector, in the TL) the return type will be RpcResponse&lt;RpcVector&lt;T&gt;&gt; (RpcVector&lt;T&gt; inherits from List&lt;T&gt;). RpcResponse exposes the following properties: . | RpcCallFailed, true when an error was returned by the API or the message failed to send. | Error, returns an instance of RpcError describing the error occured. | Response, returns the response by the API. | . Exceptions are raised in the following cases: . | When the request was completed successfully (meaning that no RpcError was returned) and the Error property is used an InvalidOperationException is thrown. | When the request was not completed successfully and the Response property is used a RpcException containing an RpcError is thrown. | . The second is more of a not recommended feature for people who want to handle rpc errors using exceptions. The use of exceptions is discouraged as they are slow and make the code harder to read. Example of correct usage: . var apiCall = await _client.Api.CloudChatsApi.Messages.SendMessageAsync(PeerId.FromPeer(message.PeerId), \"Hello user! This is a reply to your message\", replyToMsgId: message.Id); if (apiCall.RpcCallFailed) { // We log the error as there isn't much we can do except analyze the problem in a later moment _logger.Error(\"Couldn't reply to the user because the following error occurred: {Error}\", apiCall.Error); return; } // Do what we want with the result or ignore it var result = apiCall.Response; . ",
+    "url": "http://localhost:4000/usage/invoking_api.html#retrieving-results",
+    "relUrl": "/usage/invoking_api.html#retrieving-results"
+  },"36": {
+    "doc": "Calling API methods",
+    "title": "Handling errors",
+    "content": "To provide a cleaner API, CatraProto parses known errors and provides a simple API to interact with them. If an error is not known to CatraProto, you will receive an instance of UnknownError. An example of such error is FloodWaitError which exposes the WaitTime property. Example: . if (apiCall.RpcCallFailed) { if (apiCall.Error is FloodWaitError error) { _logger.Error(\"Couldn't reply to the user because the API requires a wait time of {Time} seconds\", error.WaitTime.TotalSeconds); } else { _logger.Error(\"Couldn't reply to the user because the following error occurred: {Error}\", apiCall.Error); } return; } . RpcError also overloads ToString(). The error is printed in the following format: [Code][Message][Description]. Simplified API . CatraProto tries to simplify the API as much as possible allowing you not to care about implementation details such as a peer database. This is done by using the PeerId struct, exposing long directly for IDs where possible, and making some parameters optional. An in-depth look at how CatraProto simplifies the API . For example, for each method that requires a InputPeer an overload is generated to simplify the API and allow you to use the PeerId struct. You can see it in the EventHandler example. An example of simplified method is messages.sendMessage. This is its TL definition: . messages.sendMessage#d9d75a4 flags:# no_webpage:flags.1?true silent:flags.5?true background:flags.6?true clear_draft:flags.7?true noforwards:flags.14?true peer:InputPeer reply_to_msg_id:flags.0?int message:string random_id:long reply_markup:flags.2?ReplyMarkup entities:flags.3?Vector&lt;MessageEntity&gt; schedule_date:flags.10?int send_as:flags.13?InputPeer = Updates; . This is how the methods is converted: . Task&lt;RpcResponse&lt;UpdatesBase&gt;&gt; SendMessageAsync(PeerId peer, string message, bool noWebpage = false, bool silent = false, bool background = false, bool clearDraft = false, bool noforwards = false, int? replyToMsgId = null, long? randomId = null, CatraProto.Client.TL.Schemas.CloudChats.ReplyMarkupBase? replyMarkup = null, List&lt;CatraProto.Client.TL.Schemas.CloudChats.MessageEntityBase&gt;? entities = null, int? scheduleDate = null, PeerId? sendAs = null, CatraProto.Client.Connections.MessageScheduling.MessageSendingOptions? messageSendingOptions = null, CancellationToken cancellationToken = default) . Here’s a list of changes: . | The flags parameter was removed as it is handled by CatraProto. | The InputPeer type was replaced by PeerId. This means that CatraProto will also automatically fetch all the data it needs about the peer to send the message. | The random_id parameter was made nullable. It is handled by CatraProto but the user can still specify a value for it if they want. | . What is MessageSendingOptions? . You may have noticed that almost every method has a messageSendingOptions parameter. As of now, this is useless but it will be used in the future to define custom settings. ",
+    "url": "http://localhost:4000/usage/invoking_api.html#handling-errors",
+    "relUrl": "/usage/invoking_api.html#handling-errors"
+  },"37": {
+    "doc": "Calling API methods",
+    "title": "Calling API methods",
+    "content": " ",
+    "url": "http://localhost:4000/usage/invoking_api.html",
+    "relUrl": "/usage/invoking_api.html"
+  },"38": {
+    "doc": "JSON Serialization",
+    "title": "Json Serialization",
+    "content": "Sometimes you might find it useful to convert TL Objects to human-readble text, this is where the ToJson() extension located in the CatraProto.Client.TL namespace comes into play. It also offers an optional parameter to enable/disable formatting of the resulting text. ",
+    "url": "http://localhost:4000/enhancing/json.html#json-serialization",
+    "relUrl": "/enhancing/json.html#json-serialization"
+  },"39": {
+    "doc": "JSON Serialization",
+    "title": "Example",
+    "content": "_logger.Information(\"Hi! I received the following object but couldn't process it: {Obj}\", myMessage.ToJson()); . Note: As of now, the resulting text does not contain the constructors' name. ",
+    "url": "http://localhost:4000/enhancing/json.html#example",
+    "relUrl": "/enhancing/json.html#example"
+  },"40": {
+    "doc": "JSON Serialization",
+    "title": "How does it work?",
+    "content": "Each property of every object has a Newtonsoft.Json.JsonProperty attribute, where the name is the TL-name. Example: . [Newtonsoft.Json.JsonProperty(\"menu_button\")] public sealed override CatraProto.Client.TL.Schemas.CloudChats.BotMenuButtonBase MenuButton { get; set; } . ",
+    "url": "http://localhost:4000/enhancing/json.html#how-does-it-work",
+    "relUrl": "/enhancing/json.html#how-does-it-work"
+  },"41": {
+    "doc": "JSON Serialization",
+    "title": "JSON Serialization",
+    "content": " ",
+    "url": "http://localhost:4000/enhancing/json.html",
+    "relUrl": "/enhancing/json.html"
+  },"42": {
+    "doc": "Library Configuration",
+    "title": "Configuring CatraProto",
+    "content": "CatraProto requires some user-provided configuration data such as API credentials to work. ",
+    "url": "http://localhost:4000/configuration/library_configuration.html#configuring-catraproto",
+    "relUrl": "/configuration/library_configuration.html#configuring-catraproto"
+  },"43": {
+    "doc": "Library Configuration",
+    "title": "API Settings",
+    "content": "The ApiSettings constructor takes configuration data to be transmitted to Telegram regarding the app. | apiId and apiHash, which can be retrieved by following these instructions. | langPack is the language pack used by the client. Allowed values are: desktop, android, ios, macos and android_x. | deviceModel, appVersion and systemVersion are custom parameters shown to the user in its devices tab. They do not follow any standard. | langCode and systemLangCode should follow the ISO 639-1 standard. | . Example: . var apiSettings = new ApiSettings(45654, \"63h4ofskqp045jsl204h\", \"Raspberry Pi\", \"1.0\", \"en\", \"tdesktop\", \"en\", \"1.0\"); . ",
+    "url": "http://localhost:4000/configuration/library_configuration.html#api-settings",
+    "relUrl": "/configuration/library_configuration.html#api-settings"
+  },"44": {
+    "doc": "Library Configuration",
+    "title": "Session Settings",
+    "content": "Session settings are used by CatraProto to know where to store both the session and data received by Telegram. | The sessionSerializer parameter takes an instance of IAsyncSessionSerializer and uses it to serialize the session. CatraProto provides a FileSerializer. It only requires a parameter: . | filePath where the session will be saved. You can also implement your own IAsyncSessionSerializer. | . | The databaseSettings parameter takes an instance of DatabaseSettings. DatabaseSettings’ constructor requires two parameters: . | path which specifies a path where the persistent cache will be created. | peerCacheSize which is the maximum number of elements for the in-memory peer cache. | . | The sessionName parameters takes a string specifying the name of the session which will be used to write logs. | . To not create confusion, it is recommended to give the session a .catra extension and a .db extension to the database. Example: . var sessionSettings = new SessionSettings(new FileSerializer(\"data/accountSession.catra\"), new DatabaseSettings($\"data/accountData.db\", 50), \"Private account\"); . ",
+    "url": "http://localhost:4000/configuration/library_configuration.html#session-settings",
+    "relUrl": "/configuration/library_configuration.html#session-settings"
+  },"45": {
+    "doc": "Library Configuration",
+    "title": "Connection Settings",
+    "content": "Connection settings are used to specify the default MTProto server, PFS key duration and other connection settings. | The defaultDatacenter parameter takes an instance of ConnectionInfo. ConnectionInfo takes the following parameters: . | IPAddress takes an instance of IPAddress. It is used to specify the IP of the default datacenter. You can get information about your default datacenter by following these instructions. | port specifies the port to be used in order to connect to the datacenter. You can find it in your app’s configuration. You can find it right after the “:” in the IP address. | dcId used to specify which DC we are connecting to. You can find what DC has been assigned to your app just under the IP address. If this value is incorrect the library won’t be able to perform many operations such as logging in correctly. | test specifies whether the DC we are connecting to is a test DC. It is very important to make sure this parameter is correct otherwise CatraProto won’t be able to communicate with the API. | . | The pfsKeyDuration parameter specifies in seconds how long the PFS Key should last. When expired, the library will automatically generated a new one. This does not mean you will lose access to your session. One usually doesn’t need to change this parameter. | The connectionTimeout parameter specifies in seconds how much time must elapse before reconnecting if the server does not reply. | The connectionRetry parameter specifies in seconds how much the library must wait before trying to connect again after a failed attempt. | The ipv6Allowed parameter specifies whether IPv6 is allowed or not. | The ipv6Only parameter specifies whether only IPv6 must be used or not. This works only for connections that are not the default connection as Telegram only provides IPv4s. | . Example: . var connectionInfo = new ConnectionInfo(IPAddress.Parse(\"149.154.167.50\"), 443, 2, false); var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 25, 15, false, false); . ",
+    "url": "http://localhost:4000/configuration/library_configuration.html#connection-settings",
+    "relUrl": "/configuration/library_configuration.html#connection-settings"
+  },"46": {
+    "doc": "Library Configuration",
+    "title": "Updates settings",
+    "content": "This is an optional parameter, you can skip this part if you’re not interested. Currently, the only property exposed by the UpdatesSettings class is queueUpdates and when false it disables this behaviour. Example: . var updatesSettings = new UpdatesSettings(false); . ",
+    "url": "http://localhost:4000/configuration/library_configuration.html#updates-settings",
+    "relUrl": "/configuration/library_configuration.html#updates-settings"
+  },"47": {
+    "doc": "Library Configuration",
+    "title": "Combining every setting together",
+    "content": "After having specified our configuration data and behaviour preferences we must put everything together. To do this, we use the ClientSettings class. It simply takes the settings we have just created as parameters in the following order: SessionSettings, ApiSettings, ConnectionSettings. Optionally, UpdatesSettings are also accepted as last parameter. Example: . var clientSettings = new ClientSettings(sessionSettings, apiSettings, connectionSettings); . ",
+    "url": "http://localhost:4000/configuration/library_configuration.html#combining-every-setting-together",
+    "relUrl": "/configuration/library_configuration.html#combining-every-setting-together"
+  },"48": {
+    "doc": "Library Configuration",
+    "title": "Library Configuration",
+    "content": " ",
+    "url": "http://localhost:4000/configuration/library_configuration.html",
+    "relUrl": "/configuration/library_configuration.html"
+  },"49": {
+    "doc": "Logger Configuration",
+    "title": "Logger Configuration",
+    "content": "CatraProto uses Serilog for logging. You can use the helper method Logger.CreateDefaultLogger() to create a default logger which prints to console. If no parameter is provided, the method will create a logger with logging level set to LogEventLevel.Information. You can provide a LoggingLevelSwitch to Logger.CreateDefaultLogger() if you want to change logging level. You can also specify a console theme using the templateTheme parameter. By default, the Code theme is used. Example: . var logger = Logger.CreateDefaultLogger(new LoggingLevelSwitch(LogEventLevel.Verbose), TemplateTheme.Literate); . You can also create a logger with your own settings by following the instructions in Serilog’s documentation. ",
+    "url": "http://localhost:4000/configuration/logger_configuration.html",
+    "relUrl": "/configuration/logger_configuration.html"
+  },"50": {
+    "doc": "Logger Configuration",
+    "title": "Using your own sink",
+    "content": "CatraProto provides a GetExpressionTemplate. This method returns the ExpressionTemplate used by CatraProto for logging to help keep the logging template consistent. Example: . var myOwnLogger = new LoggerConfiguration() .WriteTo .File(Logger.GetExpressionTemplate(), \"Log.txt\", LogEventLevel.Verbose) .CreateLogger(); . ",
+    "url": "http://localhost:4000/configuration/logger_configuration.html#using-your-own-sink",
+    "relUrl": "/configuration/logger_configuration.html#using-your-own-sink"
+  },"51": {
+    "doc": "Styiling text",
+    "title": "Styling text",
+    "content": "Telegram supports a lot of text decorations (Bold, Italic, Strikethrough, Underline, Spoiler, Url and Mention) but it may be hard to work with them. This is why CatraProto provides the TextFormatter class to help you create beautiful text easily. ",
+    "url": "http://localhost:4000/enhancing/markup.html#styling-text",
+    "relUrl": "/enhancing/markup.html#styling-text"
+  },"52": {
+    "doc": "Styiling text",
+    "title": "Getting a formatter",
+    "content": "You can get an instance of TextFormatter by calling GetTextFormatter from the TelegramClient class. You can also specify some options, which are described here. ",
+    "url": "http://localhost:4000/enhancing/markup.html#getting-a-formatter",
+    "relUrl": "/enhancing/markup.html#getting-a-formatter"
+  },"53": {
+    "doc": "Styiling text",
+    "title": "Formatting your text",
+    "content": "The following methods are exposed by this class: . | TextFormatter AddPlain(string text) used to add simple text with no style. | TextFormatter AddMarkup(string text, MarkupType type) used to add markup styles which don’t require any additional parameters. | TextFormatter AddLink(string text, string link, MarkupType otherMarkup = MarkupType.None) used to add a link hidden under a text which can also be decorated with other styles. | TextFormatter AddMention(string text, long userId, MarkupType otherMarkup = MarkupType.None) used to add a mention to a user (not by username) hidden under a text which can also be decorated with other styles. | TextFormatter AddCode(string text, string language, MarkupType otherMarkup = MarkupType.None) used to add language specific code highlighting. | (string Text, List&lt;MessageEntityBase&gt; Entities) GetFormatted() used to get the final text and the entities used to decorate it. | . You can combine multiple MarkupTypes using the bitwise OR (|) operator. See the example below to see how. Warning: To mention a user you must have seen them at least once while using this session, otherwise the mention will not appear (other markup entities will still show up). Note: As of now, the only official client supporting code-specific highlighting is Telegram WebZ. Note: All the Add* methods return a reference to the exact same class they were called from. This is done to easily allow you to chain those calls. ",
+    "url": "http://localhost:4000/enhancing/markup.html#formatting-your-text",
+    "relUrl": "/enhancing/markup.html#formatting-your-text"
+  },"54": {
+    "doc": "Styiling text",
+    "title": "Options",
+    "content": "As of now, only the SkipTrailingSpaces option is allowed. It is used to avoid formatting trailing spaces in order to make the resulting string cleaner and it is enabled by default. Here’s an example of the same string with the option enabled and disabled: . If you want to disable it, you can specify None in the GetTextFormatter method. _client.GetTextFormatter(MarkupOptions.None); . ",
+    "url": "http://localhost:4000/enhancing/markup.html#options",
+    "relUrl": "/enhancing/markup.html#options"
+  },"55": {
+    "doc": "Styiling text",
+    "title": "Usage example",
+    "content": "var (text, entities) = _client.GetTextFormatter() .AddMarkup(\"Hi! This part of the text is both italic and bold.\\n\", MarkupType.Italic | MarkupType.Bold) .AddMarkup(\"And this part is only bold \", MarkupType.Bold) .AddMarkup(\"while this is a spoiler!\\n\", MarkupType.Spoiler) .AddMarkup(\"This instead, is both strike through and underline \", MarkupType.Strikethrough | MarkupType.Underline) .AddLink(\"just next to a bold link. \", \"https://catraproto.github.io/docs\", MarkupType.Bold) .AddMention(\"This is an italic mention to my creator \", YOUR_ID_GOES_HERE, MarkupType.Italic) .AddPlain(\"and this is just some boring plain text :C\") .AddCode(\"console.log(0.1+0.2)\", \"js\") .GetFormatted(); await _client.Api.CloudChatsApi.Messages.SendMessageAsync(PeerId.FromPeer(message.Peer), text, entities: entities); . This is what the end result looks like: . ",
+    "url": "http://localhost:4000/enhancing/markup.html#usage-example",
+    "relUrl": "/enhancing/markup.html#usage-example"
+  },"56": {
+    "doc": "Styiling text",
+    "title": "Styiling text",
+    "content": " ",
+    "url": "http://localhost:4000/enhancing/markup.html",
+    "relUrl": "/enhancing/markup.html"
+  },"57": {
+    "doc": "Receiving Messages (Updates)",
+    "title": "Receiving Updates",
+    "content": "Receiving messages means in fact receiving an update. Updates do not only communicate whether a new message was sent, edited or received but many, many other things such as a user typing or in the case of bots when a user’s permissions in a chat have changed. CatraProto takes care of the correct handling of updates so you don’t have to make sure there are no gaps or duplicate updates. ",
+    "url": "http://localhost:4000/usage/receiving_updates.html#receiving-updates",
+    "relUrl": "/usage/receiving_updates.html#receiving-updates"
+  },"58": {
+    "doc": "Receiving Messages (Updates)",
+    "title": "Creating an EventHandler",
+    "content": "To handle updates a class extending the IEventHandler interface must be defined. Example: . public class EventHandler : IEventHandler { private readonly TelegramClient _client; public EventHandler(TelegramClient client) { _client = client; } public async Task OnSessionUpdateAsync() { //login code from the previous page goes here } public async Task OnUpdateAsync(UpdateBase update) { if (update is UpdateNewMessage { Message: Message { Out: false } message }) { var asPeerId = PeerId.FromPeer(message.PeerId); if (asPeerId.Type is not PeerType.User) { // We only want to reply to messages sent in private chat. return; } await _client.Api.CloudChatsApi.Messages.SendMessageAsync(asPeerId, \"Hello user. Thank you for contacting me and trying CatraProto!\"); } } } . The following code checks whether the update is an instance of UpdateNewMessage and that the Message inside it is an instance of Message with the Out property set to false. If the check is successful it makes sure the message was received inside a private chat and then replies to the user. ",
+    "url": "http://localhost:4000/usage/receiving_updates.html#creating-an-eventhandler",
+    "relUrl": "/usage/receiving_updates.html#creating-an-eventhandler"
+  },"59": {
+    "doc": "Receiving Messages (Updates)",
+    "title": "Avoiding older messages",
+    "content": "When first logging in, all updates from when the client was created are fetched. This may lead to undesired behaviour as you may not want your bot to start replying to older messages. To mitigate this, you can check the message’s date. Example: . if (message.Date - StartTime &lt; 0) { _logger.Information(\"Skipping message {Id} because it's old.\", message.Id); return; } . Where StartTime is the unix timestamp value of when you started the script. You can get it by calling DateTimeOffset.UtcNow.ToUnixTimeSeconds() at startup and saving it in a static field. ",
+    "url": "http://localhost:4000/usage/receiving_updates.html#avoiding-older-messages",
+    "relUrl": "/usage/receiving_updates.html#avoiding-older-messages"
+  },"60": {
+    "doc": "Receiving Messages (Updates)",
+    "title": "How updates are delivered",
+    "content": "In order to avoid flooding the event handler some internal queues are used. There is a queue for each peer and if an update is not bound to a peer it is added to a common queue. This means that each update is separated based on which chat it was sent in and it will wait to trigger your event handler if an updated from the same chat is still being processed. This behaviour can be disabled through the UpdatesSettings class as described here. ",
+    "url": "http://localhost:4000/usage/receiving_updates.html#how-updates-are-delivered",
+    "relUrl": "/usage/receiving_updates.html#how-updates-are-delivered"
+  },"61": {
+    "doc": "Receiving Messages (Updates)",
+    "title": "Receiving Messages (Updates)",
+    "content": " ",
+    "url": "http://localhost:4000/usage/receiving_updates.html",
+    "relUrl": "/usage/receiving_updates.html"
+  }
+}

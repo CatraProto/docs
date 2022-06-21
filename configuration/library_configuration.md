@@ -1,6 +1,8 @@
 ---
+layout: default
 title: Library Configuration
 nav_order: 2
+parent: Initial configuration
 ---
 # Configuring CatraProto
 CatraProto **requires** some user-provided configuration data such as [API credentials](app_configuration.md) to work.
@@ -56,10 +58,19 @@ var connectionInfo = new ConnectionInfo(IPAddress.Parse("149.154.167.50"), 443, 
 var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 25, 15, false, false);
 ```
 
+## Updates settings
+**This is an optional parameter, you can skip this part if you're not interested.**\
+Currently, the only property exposed by the UpdatesSettings class is `queueUpdates` and when false it disables [this](/receiving_updates.md#how-updates-are-delivered) behaviour.
+
+Example:
+```cs 
+var updatesSettings = new UpdatesSettings(false);
+```
+
 ## Combining every setting together
 After having specified our configuration data and behaviour preferences we must put everything together. 
 
-To do this, we use the [ClientSettings](https://github.com/CatraProto/Client/blob/master/src/CatraProto.Client/MTProto/Settings/ClientSettings.cs) class. It simply takes the settings we have just created as parameters in the following order: `SessionSettings`, `ApiSettings`, `ConnectionSettings`.
+To do this, we use the [ClientSettings](https://github.com/CatraProto/Client/blob/master/src/CatraProto.Client/MTProto/Settings/ClientSettings.cs) class. It simply takes the settings we have just created as parameters in the following order: `SessionSettings`, `ApiSettings`, `ConnectionSettings`. Optionally, [UpdatesSettings](#updates-settings) are also accepted as last parameter.
 
 Example:
 ```cs 

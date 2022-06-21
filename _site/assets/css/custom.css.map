@@ -1,0 +1,14 @@
+{
+	"version": 3,
+	"file": "custom.css",
+	"sources": [
+		"custom.scss",
+		"_sass/custom.scss"
+	],
+	"sourcesContent": [
+		"@import \"custom\";\n",
+		".note {\r\n    background-color: #08469e;\r\n    padding: 7px;\r\n    margin-top: 10px;\r\n    border-radius: 15px;\r\n    border-color: #052c63;\r\n    border-style: solid;\r\n    border-width: medium;\r\n}\r\n\r\n.warning {\r\n    background-color: #db0b35;\r\n    padding: 7px;\r\n    margin-top: 10px;\r\n    border-radius: 15px;\r\n    border-color: #a60223;\r\n    border-style: solid;\r\n    border-width: thin;\r\n}"
+	],
+	"names": [],
+	"mappings": "ACAA,AAAA,KAAK,CAAC,EACF,gBAAgB,EAAE,OAAO,EACzB,OAAO,EAAE,GAAG,EACZ,UAAU,EAAE,IAAI,EAChB,aAAa,EAAE,IAAI,EACnB,YAAY,EAAE,OAAO,EACrB,YAAY,EAAE,KAAK,EACnB,YAAY,EAAE,MAAM,GACvB;;AAED,AAAA,QAAQ,CAAC,EACL,gBAAgB,EAAE,OAAO,EACzB,OAAO,EAAE,GAAG,EACZ,UAAU,EAAE,IAAI,EAChB,aAAa,EAAE,IAAI,EACnB,YAAY,EAAE,OAAO,EACrB,YAAY,EAAE,KAAK,EACnB,YAAY,EAAE,IAAI,GACrB"
+}
