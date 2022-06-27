@@ -1,5 +1,7 @@
+url: "https://catraproto.github.io/docs"
 plugins:
   - jekyll-relative-links
+  - jekyll-sitemap
 relative_links:
   enabled: true
   collections: true
@@ -12,5 +14,4 @@ color_scheme: dark
 aux_links:
   "Source Code":
     - "//github.com/CatraProto/Client"    
-
 remote_theme: just-the-docs/just-the-docs
