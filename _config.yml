@@ -1,4 +1,4 @@
-url: "https://catraproto.github.io/docs"
+url: "https://catraproto.github.io/"
 plugins:
   - jekyll-relative-links
   - jekyll-sitemap
