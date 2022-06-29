@@ -64,4 +64,4 @@ Where `StartTime` is the unix timestamp value of when you started the script. Yo
 ## How updates are delivered
 In order to **avoid flooding** the event handler some internal queues are used. There is a queue for each peer and **if an update is not bound to a peer it is added to a common queue**. This means that **each update is separated based on which chat it was sent in** and **it will wait** to trigger your event handler **if an updated from the same chat is still being processed.**
 
-This behaviour can be disabled through the UpdatesSettings class as described [here](/library_configuration.md).
+This behaviour can be disabled through the UpdatesSettings class as described [here](/configuration/library_configuration.md).
