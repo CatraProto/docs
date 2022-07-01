@@ -177,7 +177,7 @@ public async Task OnSessionUpdateAsync(LoginState loginState)
 }
 ```
 
-**Please note that if you use `Console.ReadLine` to prevent the app from quitting, you'll need to do it in another way or to call it only when the login is finished. The latter is done in the [full example](https://github.com/CatraProto/Client/example/ConsoleLogin) using a `TaskCompletionSource`.**
+**Please note that if you use `Console.ReadLine` to prevent the app from quitting, you'll need to do it in another way or to call it only when the login is finished. The latter is done in the [full example](https://github.com/CatraProto/Client/tree/master/examples/ConsoleLogin) using a `TaskCompletionSource`.**
 
 ### Code explaination
 Even if at first sight this might look very complex and hard to understand, this explaination will try to make it as simple as possible.
