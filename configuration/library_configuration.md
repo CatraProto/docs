@@ -60,7 +60,7 @@ var connectionSettings = new ConnectionSettings(connectionInfo, 86400, 25, 15, f
 
 ## Updates settings
 **This is an optional parameter, you can skip this part if you're not interested.**\
-Currently, the only property exposed by the UpdatesSettings class is `queueUpdates` and when false it disables [this](/receiving_updates.md#how-updates-are-delivered) behaviour.
+Currently, the only property exposed by the UpdatesSettings class is `queueUpdates` and when false it disables [this](/usage/receiving_updates.md#how-updates-are-delivered) behaviour.
 
 Example:
 ```cs 
